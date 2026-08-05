@@ -56,7 +56,7 @@ def load_and_clean_users(file_path):
     print("TODO: load_users")
     
     with open(file_path, "r") as file:
-        csv_data = csv.reader()
+        csv_data = csv.reader(file)
         next(csv_data)
 
         cursor.executemany("INSERT INTO users VALUES (?, ?)", csv_data)
