@@ -63,7 +63,10 @@ def load_and_clean_users(file_path):
             if not row:
                 continue
 
-            if len(row) == 2:
+            if len(row) != 2:
+                continue
+
+            if all(field.strip() for field in row):
                 valid_records.append(row)
 
     if valid_records:
