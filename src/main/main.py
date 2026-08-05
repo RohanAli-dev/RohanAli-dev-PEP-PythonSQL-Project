@@ -55,11 +55,11 @@ def main():
 def load_and_clean_users(file_path):
     print("TODO: load_users")
     
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         csv_data = csv.reader(file)
         next(csv_data)
 
-        cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", csv_data)
+        cursor.executemany("INSERT INTO users VALUES (?, ?)", csv_data)
     
     conn.commit()
 
