@@ -70,7 +70,7 @@ def load_and_clean_users(file_path):
                 valid_records.append(row)
 
     if valid_records:
-        print(valid_records)
+        # print(valid_records)
         cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", valid_records)
         conn.commit()
 
@@ -94,7 +94,7 @@ def load_and_clean_call_logs(file_path):
                 valid_records.append(row)
 
     if valid_records:
-        print(valid_records)
+        # print(valid_records)
         cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userID) VALUES (?, ?, ?, ?, ?)", valid_records)
         conn.commit()
 
@@ -108,6 +108,8 @@ def write_user_analytics(csv_file_path):
     cursor.execute(""" SELECT userID, AVG(strftime('%s', endTime) - strftime('%s', startTime)) as avgDur, COUNT(*) FROM callLogs GROUP BY userID """)
     analytics_data = cursor.fetchall()
 
+    print(analytics_data)
+    
     with open(csv_file_path, "w", encoding="utf-8", newline="") as file:
         csv_write = csv.writer(file)
         # csv_write.writerow(["userId", "avgDuration", "numCalls"])
