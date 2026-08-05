@@ -53,7 +53,6 @@ def main():
 
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
-    print("TODO: load_users")
     
     valid_records = []
     with open(file_path, "r", encoding="utf-8") as file:
@@ -68,6 +67,7 @@ def load_and_clean_users(file_path):
                 valid_records.append(row)
 
     if valid_records:
+        print(valid_records)
         cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", valid_records)
         conn.commit()
 
