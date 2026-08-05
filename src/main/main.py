@@ -113,8 +113,13 @@ def write_user_analytics(csv_file_path):
     with open(csv_file_path, "w", encoding="utf-8", newline="") as file:
         csv_write = csv.writer(file)
         csv_write.writerow(["userId", "avgDuration", "numCalls"])
+        
+        for record in analytics_data:
+            user_id = int(record[0])
+            avg_dur = float(record[1])
+            num_calls = int(record[2])
 
-        csv_write.writerow(analytics_data)
+            csv_write.writerow([user_id, avg_dur, num_calls])
 
 
 
