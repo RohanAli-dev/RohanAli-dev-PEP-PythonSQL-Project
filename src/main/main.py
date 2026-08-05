@@ -59,7 +59,7 @@ def load_and_clean_users(file_path):
         csv_data = csv.reader(file)
         next(csv_data)
 
-        cursor.executemany("INSERT INTO users VALUES (?, ?)", csv_data)
+        cursor.executemany("INSERT INTO users VALUES (?, ?, ?)", csv_data)
     
     conn.commit()
 
