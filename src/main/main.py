@@ -95,7 +95,7 @@ def load_and_clean_call_logs(file_path):
 
     if valid_records:
         print(valid_records)
-        # cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userID) VALUES (?, ?, ?, ?, ?)", valid_records)
+        cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userID) VALUES (?, ?, ?, ?, ?)", valid_records)
         conn.commit()
 
 
