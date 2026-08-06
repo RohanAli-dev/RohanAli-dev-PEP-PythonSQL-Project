@@ -54,9 +54,9 @@ def main():
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
     
-    valid_records = []
-    with open(file_path, "r", encoding="utf-8") as file:
-        csv_data = csv.reader(file)
+    cleanRecords = []
+    with open(file_path, "r", encoding="utf-8") as new_file:
+        csv_data = csv.reader(new_file)
         next(csv_data)
 
         for row in csv_data:
@@ -66,21 +66,19 @@ def load_and_clean_users(file_path):
             if len(row) != 2:
                 continue
 
-            if all(field.strip() for field in row):
-                valid_records.append(row)
+            if all(fields.strip() for fields in row):
+                cleanRecords.append(row)
 
-    if valid_records:
-        # print(valid_records)
-        cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", valid_records)
+    if cleanRecords:
+        cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", cleanRecords)
         conn.commit()
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
-    #print("TODO: load_call_logs")
 
-    valid_records = []
-    with open(file_path, "r", encoding="utf-8") as file:
-        csv_data = csv.reader(file)
+    cleanRecords = []
+    with open(file_path, "r", encoding="utf-8") as new_file:
+        csv_data = csv.reader(new_file)
         next(csv_data)
 
         for row in csv_data:
@@ -90,12 +88,11 @@ def load_and_clean_call_logs(file_path):
             if len(row) != 5:
                 continue
 
-            if all(field.strip() for field in row):
-                valid_records.append(row)
+            if all(fields.strip() for fields in row):
+                cleanRecords.append(row)
 
-    if valid_records:
-        # print(valid_records)
-        cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userID) VALUES (?, ?, ?, ?, ?)", valid_records)
+    if cleanRecords:
+        cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userID) VALUES (?, ?, ?, ?, ?)", cleanRecords)
         conn.commit()
 
 
@@ -107,16 +104,16 @@ def write_user_analytics(csv_file_path):
     cursor.execute(""" SELECT userID, AVG(endTime - startTime) as avgDur, COUNT(*) FROM callLogs GROUP BY userID """)
     analytics_data = cursor.fetchall()
 
-    with open(csv_file_path, "w", encoding="utf-8", newline="") as file:
-        csv_write = csv.writer(file)
+    with open(csv_file_path, "w", encoding="utf-8", newline="") as new_file:
+        csv_write = csv.writer(new_file)
         csv_write.writerow(["userId", "avgDuration", "numCalls"])
         
-        for record in analytics_data:
-            user_id = int(record[0])
-            avg_dur = float(record[1])
-            num_calls = int(record[2])
+        for field in analytics_data:
+            userID = int(field[0])
+            avgDur = float(field[1])
+            numCalls = int(field[2])
 
-            csv_write.writerow([user_id, avg_dur, num_calls])
+            csv_write.writerow([userID, avgDur, numCalls])
 
 
 
@@ -127,17 +124,17 @@ def write_ordered_calls(csv_file_path):
     cursor.execute(""" SELECT * FROM callLogs ORDER BY userID, startTime """)
     orderedCalls = cursor.fetchall()
 
-    with open(csv_file_path, "w", encoding="utf-8", newline="") as file:
-        csv_write = csv.writer(file)
+    with open(csv_file_path, "w", encoding="utf-8", newline="") as new_file:
+        csv_write = csv.writer(new_file)
         csv_write.writerow(["callId", "phoneNumber", "startTime", "endTime", "direction", "userId"])
 
-        for record in orderedCalls:
-            callId = int(record[0])
-            phoneNumber = record[1]
-            startTime = int(record[2])
-            endTime = int(record[3])
-            direction = record[4]
-            userID = int(record[5])
+        for field in orderedCalls:
+            callId = int(field[0])
+            phoneNumber = field[1]
+            startTime = int(field[2])
+            endTime = int(field[3])
+            direction = field[4]
+            userID = int(field[5])
 
             csv_write.writerow([callId, phoneNumber, startTime, endTime, direction, userID])
 
